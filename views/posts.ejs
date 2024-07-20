@@ -1,0 +1,22 @@
+<%- include("./includes/head")%>
+    <h1>I am Post Page</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo sunt dicta hic ipsum labore voluptates commodi aliquam obcaecati veritatis, placeat et reiciendis unde nam cum, ea accusamus, minima cupiditate.</p>
+ 
+    <br/><hr/><br/>
+    <div>
+        <% if(posts.length < 1) { %>
+            Nothing to see now. <a href="/admin/create-post">+Add New Post</a>
+        <% }else{ %>
+            <a href="/admin/create-post">+Add New Post</a>
+        <% } %>
+    </div>
+    <br/>
+    <% for(let post of posts) {%>
+        <div class="posts-box">
+            <p class="post-title"><%= post.title%></p>
+            <a href="/posts/<%= post.id%>">See More ...</a>
+        </div>
+    <% } %>
+    <%- include("./includes/foot")%>
+    <br/>
+    

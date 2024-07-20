@@ -1,0 +1,25 @@
+<%- include("./includes/head")%>
+    <h1 class="title">Add New Post</h1>
+    <section class="form-section">
+        <form action="/admin" method="post">
+            <div>
+                <label for="title">Enter Title</label>
+                <input type="text" id="title" name="title" required/>
+            </div>
+
+            <div>
+                <label for="imgURL">Enter ImageURL</label>
+                <input type="text" id="imgURL" name="imgURL" required/>
+            </div>
+    
+            <div>
+                <label for="description">Enter Description</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+    
+            <div>
+                <button>Add Post</button>
+            </div>
+        </form>
+    </section>
+    <%- include("./includes/foot")%>
