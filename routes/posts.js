@@ -4,7 +4,7 @@ const postsController = require("../controllers/posts")
 
 const router = express.Router();
 
-router.get("/",postsController.renderPostsPage)
-router.get("/:postID",postsController.renderDetailPage)
+router.get("/",postsController.getAllPosts)
+router.get("/:postID",postsController.getPost)
 
 module.exports = router; 
