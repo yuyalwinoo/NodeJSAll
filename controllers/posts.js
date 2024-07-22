@@ -1,4 +1,4 @@
-const PostModel = require("../models/posts");
+const Post = require("../models/post");
 // const posts = []; 
 
 // --create post using mysql--
@@ -10,7 +10,7 @@ const PostModel = require("../models/posts");
 //     //     description,
 //     //     imgURL
 //     // })
-//     const post = new PostModel(title,description,imgURL);
+//     const post = new Post(title,description,imgURL);
 //     post.setPost()
 //     .then(()=>{
 //         res.redirect("/posts")
@@ -22,10 +22,10 @@ const PostModel = require("../models/posts");
 // --create post using sequlize--
 exports.createPost = (req,res,next)=>{
     const {title, description, imgURL} = req.body;
-    PostModel.create({
+    req.user.createPost({
         title,
         description,
-        imgUrl:imgURL 
+        imgUrl:imgURL
     }).then((result)=>{
         console.log("New Post Created.")
         res.redirect("/posts")
@@ -43,7 +43,7 @@ exports.renderCreatePage = (req,res,next)=>{
 
 // --get all post using mysql--
 // exports.getAllPosts = (req,res,next)=>{
-//     PostModel.getAllPosts()
+//     Post.getAllPosts()
 //     .then(([row])=>{
 //         console.log(row)
 //         res.render("posts",{title:'Posts',posts:row})
@@ -54,7 +54,7 @@ exports.renderCreatePage = (req,res,next)=>{
 
 // --get all post using sequlize--
 exports.getAllPosts = (req,res,next)=>{
-    PostModel.findAll({order : [["updatedAt","DESC"]]})
+    Post.findAll({order : [["updatedAt","DESC"]]})
     .then((posts)=>{
         res.render("posts",{title:'Posts',posts})
     })
@@ -65,7 +65,7 @@ exports.getAllPosts = (req,res,next)=>{
 // --get post using mysql--
 // exports.getPost = (req,res,next)=>{
 //   //const post = posts.filter(post=>+post.id === +req.params.postID);
-//   PostModel.getSinglePost(+req.params.postID)
+//   Post.getSinglePost(+req.params.postID)
 //     .then(([row])=>{
 //         console.log(row)
 //         res.render("detail",{title:'Detail',post:row[0]})
@@ -77,7 +77,7 @@ exports.getAllPosts = (req,res,next)=>{
 // --get post using sequlize--
 exports.getPost = (req,res,next)=>{
     //const post = posts.filter(post=>+post.id === +req.params.postID);
-    PostModel.findOne({where : {id : +req.params.postID}})
+    Post.findOne({where : {id : +req.params.postID}})
       .then(post=>{
           res.render("detail",{title:`${post.title}`,post})
       })
@@ -87,7 +87,7 @@ exports.getPost = (req,res,next)=>{
 
 exports.deletePost = (req,res) =>{
     const postID = +req.params.postID;
-    PostModel.findByPk(postID)
+    Post.findByPk(postID)
     .then((post)=>{
         if(!post){
             res.redirect("/posts")
@@ -103,7 +103,7 @@ exports.deletePost = (req,res) =>{
 
 exports.getOldPost = (req,res)=>{
     const postID = +req.params.postID;
-    PostModel.findByPk(postID)
+    Post.findByPk(postID)
     .then((post)=>{
         res.render("editPost",{title:`${post.title}`,post})
     })
@@ -112,7 +112,7 @@ exports.getOldPost = (req,res)=>{
 
 exports.updatePost = (req,res)=>{
     const {title,imgURL,description,postID} = req.body;
-    PostModel.findByPk(postID)
+    Post.findByPk(postID)
     .then((post)=>{
         post.title = title,
         post.description = description,

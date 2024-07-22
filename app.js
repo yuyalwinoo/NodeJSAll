@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 
 const sequelize = require('./utils/database')
 
+const User = require('./models/user')
+const Post = require('./models/post')
+
 const postsRoutes = require("./routes/posts")
 const {adminRoutes} = require("./routes/admin")
 const indexRoutes = require("./routes/index")
@@ -22,20 +25,34 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use((req,res,next)=>{
-    console.log("middleware 2")
-    next()
+    User.findByPk(1).then(user=>{
+        req.user = user;
+        next()
+    })
+    .catch(err=>console.log(err))
 })
-
 
 app.use(indexRoutes);
 app.use("/posts",postsRoutes);
 app.use("/admin",adminRoutes);
 
-sequelize.sync()
-.then(result=>{
-    console.log(result)
-    app.listen(8080);
-})
-.catch(err=>console.log(err))
+Post.belongsTo(User,{ constraints : true, onDelete : "CASCADE"});
+User.hasMany(Post);
+
+sequelize.sync()  //{force : true}
+    .then(result=>{
+        return User.findByPk(1)
+    })
+    .then(user=>{
+        if(!user){
+            return User.create({name : 'Yuya Lwin Oo',email : "yuya123@gmail.com"})
+        }
+        return user;
+    })
+    .then(user=>{
+        console.log(user);
+        app.listen(8080);
+    })
+    .catch(err=>console.log(err))
 
 //app.listen(8080);
