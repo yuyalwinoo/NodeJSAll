@@ -1,21 +1,22 @@
 <%- include("./includes/head")%>
-    <h1 class="title">Add New Post</h1>
+    <h1 class="title">Edit your Post</h1>
     <section class="form-section">
         <a href="/posts">View All Posts</a>
-        <form action="/admin" method="post">
+        <form action="/admin/post-edit" method="post">
+            <input type="hidden" name="postID" value="<%=post.id%>"/>
             <div>
                 <label for="title">Enter Title</label>
-                <input type="text" id="title" name="title" required/>
+                <input type="text" id="title" name="title" value="<%=post.title%>"/>
             </div>
 
             <div>
                 <label for="imgURL">Enter ImageURL</label>
-                <input type="text" id="imgURL" name="imgURL" required/>
+                <input type="text" id="imgURL" name="imgURL" value="<%=post.imgUrl%>" required/>
             </div>
     
             <div>
                 <label for="description">Enter Description</label>
-                <textarea id="description" name="description" rows="10" required></textarea>
+                <textarea id="description" name="description" rows="10" required><%=post.description%></textarea>
             </div>
     
             <div>
@@ -23,4 +24,4 @@
             </div>
         </form>
     </section>
-    <%- include("./includes/foot")%>
+<%- include("./includes/foot")%>

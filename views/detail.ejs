@@ -7,6 +7,13 @@
         <h1><%= post.title %></h1>
         <img src=<%= post.imgUrl %> alt=<%= post.title %>/>
         <p class="post-desc"><%= post.description %></p>
+        <br/>
 
+        <a href="/admin/post-edit/<%= post.id%>">Edit</a>
+
+        <form action="/admin/post/<%= post.id%>" method="post" style="display: inline-block;">
+            <button>Delete</button>
+        </form>
+       
     </section>
     <%- include("./includes/foot")%>
