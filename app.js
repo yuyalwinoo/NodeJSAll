@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const postsRoutes = require("./routes/posts")
 const {adminRoutes} = require("./routes/admin")
 const indexRoutes = require("./routes/index")
+
+const mongoDbConnector = require("./utils/database");
 const app = express();
 //console.log(postsRoutes);
 app.set("view engine","ejs");
@@ -29,5 +31,5 @@ app.use(indexRoutes);
 app.use("/posts",postsRoutes);
 app.use("/admin",adminRoutes);
 
-
+mongoDbConnector();
 app.listen(8080);
