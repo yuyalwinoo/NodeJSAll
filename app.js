@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require('body-parser');
 
+const sequelize = require('./utils/database')
+
 const postsRoutes = require("./routes/posts")
 const {adminRoutes} = require("./routes/admin")
 const indexRoutes = require("./routes/index")
@@ -29,5 +31,11 @@ app.use(indexRoutes);
 app.use("/posts",postsRoutes);
 app.use("/admin",adminRoutes);
 
+sequelize.sync()
+.then(result=>{
+    console.log(result)
+    app.listen(8080);
+})
+.catch(err=>console.log(err))
 
-app.listen(8080);
+//app.listen(8080);
