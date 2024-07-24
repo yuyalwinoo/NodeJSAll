@@ -3,8 +3,10 @@ const Post = require("../models/post")
 exports.createPost = (req,res,next)=>{
     const {title, description, imgURL} = req.body;
     const post = new Post(title,description,imgURL);
-    post.create()
-   res.redirect("/posts")
+    post.create().then(()=>{
+        console.log("Post updated");
+        res.redirect("/posts")
+    }).catch(err=>console.log(err))
 }
 
 exports.renderCreatePage = (req,res,next)=>{
@@ -25,4 +27,32 @@ exports.renderDetailPage = (req,res,next)=>{
     Post.getPost(postID).then(post=>{
         res.render("detail",{title : post.title, post})
     }).catch(err=>err)
+}
+
+exports.getEditPost = (req,res,next)=>{
+    const postID = req.params.postID;
+    Post.getPost(postID).then(post=>{
+        if(!post)
+        {
+            res.redirect("/posts")
+        }
+        res.render("editPost",{title : post.title, post})
+    }).catch(err=>err)
+    }
+
+exports.updatePost = (req,res,next) =>{
+    const {title, description, imgURL,postID} = req.body;
+    const post = new Post(title,description,imgURL,postID);
+    post.create().then(()=>{
+        console.log("Post updated");
+        res.redirect("/posts")
+    }).catch(err=>console.log(err))
+}
+
+exports.deletePost = (req,res,next) => {
+    const postID = req.params.postID;
+    Post.deletePost(postID).then(result=>{
+        res.redirect("/posts")
+    }).catch(err=>err)
+    
 }

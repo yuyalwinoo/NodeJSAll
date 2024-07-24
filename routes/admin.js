@@ -7,4 +7,10 @@ router.get("/create-post",postsController.renderCreatePage)
 
 router.post("/",postsController.createPost)
 
+router.get("/edit/:postID",postsController.getEditPost)
+
+router.post("/edit-post",postsController.updatePost)
+
+router.post("/delete/:postID",postsController.deletePost)
+
 module.exports = {adminRoutes:router};

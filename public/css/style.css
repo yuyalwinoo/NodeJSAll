@@ -20,7 +20,7 @@ a,button {
     margin: auto;
     border: #EA445A;
     font-size: large;
-
+    cursor: pointer;
 }
 .form-section {
     justify-content: center;
@@ -47,7 +47,6 @@ input,textarea {
     width: 100%;
     border-radius: 8px;
     font-size: large;
-   
 }
 *:focus {
     outline: none;
@@ -66,3 +65,16 @@ input,textarea {
 .post-desc {
     text-align: justify;
 }
+.post-head-section {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+}
+.post_action{
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+}
+

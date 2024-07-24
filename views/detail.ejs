@@ -1,10 +1,19 @@
 <%- include("./includes/head")%>
+    
     <h1 class="title">Post Detail Page</h1>
-    <div>
-        <a href="/posts">View All Posts</a>
-    </div>
+    <a href="/posts">View All Posts</a>
+        
     <section class="form-section" style="width: 50% !important;">
-        <h1><%= post.title %></h1>
+        <div class="post-head-section">
+            <h1><%= post.title %></h1>
+            <div class="post_action">
+                <a href="/admin/edit/<%= post._id %>">Edit</a>&nbsp;
+                <form action="/admin/delete/<%= post._id %>" method="post">
+                    <button>Delete</button>
+                </form>
+            </div>
+        </div>
+        
         <img src=<%= post.imgUrl %> alt=<%= post.title %>/>
         <p class="post-desc"><%= post.description %></p>
         <br/>
