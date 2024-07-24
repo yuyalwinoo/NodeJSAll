@@ -1,13 +1,9 @@
 const posts = []; 
-
+const Post = require("../models/post")
 exports.createPost = (req,res,next)=>{
     const {title, description, imgURL} = req.body;
-    posts.push({
-        id: Math.random(),
-        title,
-        description,
-        imgURL
-    })
+    const post = new Post(title,description,imgURL);
+    post.create()
    res.redirect("/posts")
 }
 
@@ -18,12 +14,15 @@ exports.renderCreatePage = (req,res,next)=>{
 }
 
 exports.renderPostsPage = (req,res,next)=>{
-    // res.send("<h1>I am Posts </h1>")
-    //res.sendFile(path.join(__dirname,"..","views","PostsPage.html"))
-    res.render("posts",{title:'Posts',posts})
+    Post.getPosts().then(posts=>{
+        res.render("posts",{title:'Posts',posts})
+    }).catch(err=>err)
 }
 
 exports.renderDetailPage = (req,res,next)=>{
-  const post = posts.filter(post=>+post.id === +req.params.postID);
-  res.render("detail",{title:'Detail',post})
+//   const post = posts.filter(post=>+post.id === +req.params.postID);
+    const postID = req.params.postID;
+    Post.getPost(postID).then(post=>{
+        res.render("detail",{title : post.title, post})
+    }).catch(err=>err)
 }

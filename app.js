@@ -6,7 +6,7 @@ const postsRoutes = require("./routes/posts")
 const {adminRoutes} = require("./routes/admin")
 const indexRoutes = require("./routes/index")
 
-const mongoDbConnector = require("./utils/database");
+const {mongoDbConnector} = require("./utils/database");
 const app = express();
 //console.log(postsRoutes);
 app.set("view engine","ejs");

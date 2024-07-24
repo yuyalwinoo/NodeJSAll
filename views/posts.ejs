@@ -14,7 +14,7 @@
     <% for(let post of posts) {%>
         <div class="posts-box">
             <p class="post-title"><%= post.title%></p>
-            <a href="/posts/<%= post.id%>">See More ...</a>
+            <a href="/posts/<%= post._id%>">See More ...</a>
         </div>
     <% } %>
     <%- include("./includes/foot")%>
