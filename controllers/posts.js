@@ -1,10 +1,14 @@
-const posts = []; 
 const Post = require("../models/post")
+
 exports.createPost = (req,res,next)=>{
     const {title, description, imgURL} = req.body;
-    const post = new Post(title,description,imgURL);
-    post.create().then(()=>{
-        console.log("Post updated");
+
+    Post.create({
+        title, 
+        description, 
+        imgUrl: imgURL
+    }).then(()=>{
+        console.log("Post created");
         res.redirect("/posts")
     }).catch(err=>console.log(err))
 }
@@ -16,22 +20,21 @@ exports.renderCreatePage = (req,res,next)=>{
 }
 
 exports.renderPostsPage = (req,res,next)=>{
-    Post.getPosts().then(posts=>{
+    Post.find().sort({title:1}).then(posts=>{
         res.render("posts",{title:'Posts',posts})
     }).catch(err=>err)
 }
 
 exports.renderDetailPage = (req,res,next)=>{
-//   const post = posts.filter(post=>+post.id === +req.params.postID);
     const postID = req.params.postID;
-    Post.getPost(postID).then(post=>{
+    Post.findById(postID).then(post=>{
         res.render("detail",{title : post.title, post})
     }).catch(err=>err)
 }
 
 exports.getEditPost = (req,res,next)=>{
     const postID = req.params.postID;
-    Post.getPost(postID).then(post=>{
+    Post.findById(postID).then(post=>{
         if(!post)
         {
             res.redirect("/posts")
@@ -42,16 +45,26 @@ exports.getEditPost = (req,res,next)=>{
 
 exports.updatePost = (req,res,next) =>{
     const {title, description, imgURL,postID} = req.body;
-    const post = new Post(title,description,imgURL,postID);
-    post.create().then(()=>{
+
+    Post.findById(postID).then(post=>{
+        if(post)
+        {
+           post.title = title;
+           post.description = description;
+           post.imgUrl = imgURL;
+           return post.save()
+        }
+        
+    }).then(()=>{
         console.log("Post updated");
         res.redirect("/posts")
-    }).catch(err=>console.log(err))
+    }).catch(err=>err)
+
 }
 
 exports.deletePost = (req,res,next) => {
     const postID = req.params.postID;
-    Post.deletePost(postID).then(result=>{
+    Post.findByIdAndDelete(postID).then(result=>{
         res.redirect("/posts")
     }).catch(err=>err)
     
