@@ -1,0 +1,20 @@
+<%- include("../includes/head")%>
+    <h1 class="title">Create a New Account</h1>
+    <section class="form-section">
+        <form action="/login" method="post">
+            <div>
+                <label for="email">Enter Email</label>
+                <input type="text" id="email" name="email"/>
+            </div>
+
+            <div>
+                <label for="password">Enter Password</label>
+                <input type="password" id="password" name="password"/>
+            </div>
+    
+            <div>
+                <button>Register</button>
+            </div>
+        </form>
+    </section>
+    <%- include("../includes/foot")%>

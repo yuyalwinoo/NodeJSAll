@@ -3,11 +3,19 @@
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo sunt dicta hic ipsum labore voluptates commodi aliquam obcaecati veritatis, placeat et reiciendis unde nam cum, ea accusamus, minima cupiditate.</p>
  
     <br/><hr/><br/>
-    <div>
-        <% if(posts.length < 1) { %>
-            Nothing to see now. <a href="/admin/create-post">+Add New Post</a>
+    <div class="login-out-bar">
+        <% if(isLogin) { %>
+            <% if(posts.length < 1) { %>
+                Nothing to see now. <a href="/admin/create-post">+Add New Post</a>
+            <% }else{ %>
+                <a href="/admin/create-post">+Add New Post</a>
+            <% } %>
+            &nbsp;
+            <form action="/logout" method="post">
+                <button>Logout</button>
+            </form>
         <% }else{ %>
-            <a href="/admin/create-post">+Add New Post</a>
+            <a href="/login">Create a new account</a>
         <% } %>
     </div>
     <br/>

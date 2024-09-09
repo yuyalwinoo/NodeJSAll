@@ -77,4 +77,12 @@ input,textarea {
     justify-content: center;
     align-items: center;
 }
+.login-out-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-out-bar a {
+    margin: 0 5px !important;
+}
 

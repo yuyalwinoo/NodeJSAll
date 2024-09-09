@@ -1,17 +1,25 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+const dotenv = require('dotenv').config();
+const session = require("express-session");
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const postsRoutes = require("./routes/posts")
 const {adminRoutes} = require("./routes/admin")
 const indexRoutes = require("./routes/index")
+const authRoutes = require("./routes/auth")
 
 const User = require('./models/user')
-const mongoose = require("mongoose");
-const dotenv = require('dotenv').config();
 
 const app = express();
-//console.log(postsRoutes);
+
+const store = new MongoDBStore({
+  uri: process.env.MONGODB_URI,
+  collection: 'mySessions'
+});
+
 app.set("view engine","ejs");
 app.set("views","views");
 
@@ -24,6 +32,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.use(session(
+  {
+    secret : process.env.SESSION_KEY, 
+    resave : false, 
+    saveUninitialized : false,
+    store
+  }));
+
 
 app.use((req, res, next) => {
     User.findById("66af41bddd7a8808838fd67c").then((user) => {
@@ -35,6 +51,7 @@ app.use((req, res, next) => {
 app.use(indexRoutes);
 app.use("/posts",postsRoutes);
 app.use("/admin",adminRoutes);
+app.use(authRoutes);
 
 mongoose.connect(process.env.MONGODB_URL)
 .then((_) => {

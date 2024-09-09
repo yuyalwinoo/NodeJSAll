@@ -18,12 +18,21 @@ exports.renderCreatePage = (req,res,next)=>{
 }
 
 exports.renderPostsPage = (req,res,next)=>{
+    //const cookie = req.get("Cookie").split("=")[1].trim() === "true";
+     //console.log("isLogin",req.session.isLogin);
     Post.find()
     .select("title")
     .populate("userId","username")
     .sort({title:1})
     .then(posts=>{
-        res.render("posts",{title:'Posts',posts})
+        res.render(
+            "posts",
+                {   
+                    title:'Posts',
+                    posts , 
+                    isLogin : req.session.isLogin ? true : false,
+                }
+            )
     })
     .catch(err=>err)
 }
