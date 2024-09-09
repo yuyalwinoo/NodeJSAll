@@ -56,16 +56,6 @@ app.use(authRoutes);
 mongoose.connect(process.env.MONGODB_URL)
 .then((_) => {
     console.log("connected to mongodb!!!");
-    return User.findOne().then((user) => {
-      if (!user) {
-        User.create({
-          username: "Yuya",
-          email: "yuya@gmail.com",
-          password: "1234",
-        });
-      }
-      return user;
-    });
   })
 .then(()=>{
     app.listen(8080);
