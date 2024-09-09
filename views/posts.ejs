@@ -12,6 +12,7 @@
             <% } %>
             &nbsp;
             <form action="/logout" method="post">
+                <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
                 <button>Logout</button>
             </form>
         <% }else{ %>
@@ -25,6 +26,7 @@
     <% for(let post of posts) {%>
         <div class="posts-box">
             <p class="post-title"><%= post.title%></p>
+            <p class="">posted by - <%= post.userId.email%></p>
             <a href="/posts/<%= post._id%>">See More ...</a>
         </div>
     <% } %>

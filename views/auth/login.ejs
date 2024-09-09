@@ -2,6 +2,7 @@
     <h1 class="title">Login Here!</h1>
     <section class="form-section">
         <form action="/login" method="post">
+            <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
             <div>
                 <label for="email">Enter Email</label>
                 <input type="text" id="email" name="email"/>

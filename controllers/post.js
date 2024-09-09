@@ -22,15 +22,15 @@ exports.renderPostsPage = (req,res,next)=>{
      //console.log("isLogin",req.session.isLogin);
     Post.find()
     .select("title")
-    .populate("userId","username")
+    .populate("userId","email")
     .sort({title:1})
     .then(posts=>{
+        console.log(posts)
         res.render(
             "posts",
                 {   
                     title:'Posts',
-                    posts , 
-                    isLogin : req.session.isLogin ? true : false,
+                    posts, 
                 }
             )
     })

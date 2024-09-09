@@ -1,7 +1,9 @@
 <%- include("./includes/head")%>
     <h1 class="title">Add New Post</h1>
+    <a href="/posts">View All Posts</a>
     <section class="form-section">
         <form action="/admin" method="post">
+            <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
             <div>
                 <label for="title">Enter Title</label>
                 <input type="text" id="title" name="title" required/>

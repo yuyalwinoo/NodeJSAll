@@ -2,6 +2,7 @@
     <h1 class="title">Create a New Account</h1>
     <section class="form-section">
         <form action="/register" method="post">
+            <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
             <div>
                 <label for="email">Enter Email</label>
                 <input type="text" id="email" name="email"/>
