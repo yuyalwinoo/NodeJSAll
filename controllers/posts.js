@@ -2,11 +2,11 @@ const Post = require("../models/post")
 
 exports.createPost = (req,res,next)=>{
     const {title, description, imgURL} = req.body;
-
     Post.create({
         title, 
         description, 
-        imgUrl: imgURL
+        imgUrl: imgURL,
+        userId : req.user
     }).then(()=>{
         console.log("Post created");
         res.redirect("/posts")
@@ -14,15 +14,18 @@ exports.createPost = (req,res,next)=>{
 }
 
 exports.renderCreatePage = (req,res,next)=>{
-    // res.send("<h1>I am Posts </h1>")
-    //res.sendFile(path.join(__dirname,"..","views","addPost.html"))
     res.render("addPost",{title:"AddPost"})
 }
 
 exports.renderPostsPage = (req,res,next)=>{
-    Post.find().sort({title:1}).then(posts=>{
+    Post.find()
+    .select("title")
+    .populate("userId","username")
+    .sort({title:1})
+    .then(posts=>{
         res.render("posts",{title:'Posts',posts})
-    }).catch(err=>err)
+    })
+    .catch(err=>err)
 }
 
 exports.renderDetailPage = (req,res,next)=>{
