@@ -21,7 +21,7 @@ exports.renderPostsPage = (req,res,next)=>{
     //const cookie = req.get("Cookie").split("=")[1].trim() === "true";
      //console.log("isLogin",req.session.isLogin);
     Post.find()
-    .select("title")
+    .select("title description")
     .populate("userId","email")
     .sort({title:1})
     .then(posts=>{

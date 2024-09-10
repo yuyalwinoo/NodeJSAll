@@ -1,18 +1,10 @@
 <%- include("./includes/head")%>
-    <h1>I am Post Page</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo sunt dicta hic ipsum labore voluptates commodi aliquam obcaecati veritatis, placeat et reiciendis unde nam cum, ea accusamus, minima cupiditate.</p>
+    <h1 class="title">Blog.io</h1>
+    <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam illo sunt dicta hic ipsum labore voluptates commodi aliquam obcaecati veritatis, placeat et reiciendis unde nam cum, ea accusamus, minima cupiditate.</p> -->
  
-    <br/><hr/><br/>
     <div class="login-out-bar">
         <% if(isLogin) { %>
-            <% if(posts.length < 1) { %>
-                Nothing to see now. 
-                <a href="/admin/create-post">
-                    +Add New Post as <%= currentUserEmail %>
-                </a>
-            <% }else{ %>
-                <a href="/admin/create-post">+Add New Post as <%= currentUserEmail %></a>
-            <% } %>
+            <a href="/admin/create-post">+Add New Post as <%= currentUserEmail %></a>
             &nbsp;
             <form action="/logout" method="post">
                 <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
@@ -21,18 +13,25 @@
         <% }else{ %>
             <div class="post_action">
                 <a href="/login">Login to existing account</a>
+                <span>or</span>
                 <a href="/register">Create a new account</a>
             </div>
         <% } %>
     </div>
     <br/>
-    <% for(let post of posts) {%>
-        <div class="posts-box">
-            <p class="post-title"><%= post.title%></p>
-            <p class="">posted by - <%= post.userId.email%></p>
-            <a href="/posts/<%= post._id%>">See More ...</a>
-        </div>
+    <% if(posts.length < 1) { %>
+        <p class="inform-msg">Nothing to see now. </p>
     <% } %>
+    <div class="post-container">
+        <% for(let post of posts) {%>
+            <div class="posts-box">
+                <p class="post-title"><%= post.title%></p>
+                <p class="post-user">posted by - <%= post.userId.email%></p>
+                <p class="post-desc"><%= post.description.length > 100 ? post.description.substr(0,100) +" ..." :  post.description %></p>
+                <a href="/posts/<%= post._id%>">Read More ...</a>
+            </div>
+        <% } %>
+    </div>
     <%- include("./includes/foot")%>
     <br/>
     

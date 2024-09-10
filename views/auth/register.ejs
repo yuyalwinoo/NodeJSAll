@@ -1,6 +1,8 @@
 <%- include("../includes/head")%>
     <h1 class="title">Create a New Account</h1>
-    <a href="/posts">View All Posts</a>
+    <div class="go-to-posts">
+        <a href="/posts">View All Posts</a>
+    </div>
     <section class="form-section">
         <% if(errorMsg.length){%>
             <p class="warning"><%= errorMsg %></p>

@@ -1,6 +1,8 @@
 <%- include("./includes/head")%>
     <h1 class="title">Add New Post</h1>
-    <a href="/posts">View All Posts</a>
+    <div class="go-to-posts">
+        <a href="/posts">View All Posts</a>
+    </div>
     <section class="form-section">
         <form action="/admin/edit-post" method="post">
             <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>

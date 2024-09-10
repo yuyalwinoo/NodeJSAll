@@ -1,11 +1,7 @@
 <%- include("./includes/head")%>
-    
-    <h1 class="title">Post Detail Page</h1>
-    <a href="/posts">View All Posts</a>
-        
-    <section class="form-section" style="width: 50% !important;">
+    <section class="form-section" style="width: 60% !important;">
         <div class="post-head-section">
-            <h1><%= post.title %></h1>
+            <h1 class=""><%= post.title %></h1>
             <% if(post.userId.toString() === currentUserId.toString()){%>
                 <div class="post_action">
                     <a href="/admin/edit/<%= post._id %>">Edit</a>&nbsp;
@@ -17,8 +13,11 @@
             <%}%>
         </div>
         
-        <img src=<%= post.imgUrl %> alt=<%= post.title %>/>
+        <img class="detail-img" src=<%= post.imgUrl %> alt=<%= post.title %>/>
         <p class="post-desc"><%= post.description %></p>
         <br/>
+        <div class="view_all_post_button_container">
+            <a href="/posts">View All Posts</a>
+        </div>
     </section>
     <%- include("./includes/foot")%>

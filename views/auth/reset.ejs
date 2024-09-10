@@ -1,6 +1,8 @@
 <%- include("../includes/head")%>
     <h1 class="title">Reset Password</h1>
-    <a href="/login">Go To Login</a>
+    <div class="go-to-posts">
+        <a href="/posts">View All Posts</a>
+    </div>
     <section class="form-section">
         <% if(errorMsg.length){%>
             <p class="error"><%= errorMsg %></p>
