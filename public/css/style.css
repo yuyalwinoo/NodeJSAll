@@ -61,6 +61,9 @@ input,textarea {
     padding: 10px 20px 30px;
     border-radius: 8px;
     margin: 10px;
+    background-color: #3D3D3D;
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3);
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
 }
 .post-title {
     font-size: larger;
