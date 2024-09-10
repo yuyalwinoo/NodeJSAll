@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv').config();
 const session = require("express-session");
 const MongoDBStore = require('connect-mongodb-session')(session);
-const csrf  = require('csurf')
+const csrf  = require('csurf');
+const flash = require('connect-flash');
 
 const postsRoutes = require("./routes/posts")
 const {adminRoutes} = require("./routes/admin")
@@ -47,7 +48,6 @@ app.use(session(
   app.use(csrfProtection);
 
   app.use((req, res, next) => {
-  // console.log(req.session);
   if(req.session.isLogin === undefined)
   {
     return next();
@@ -65,6 +65,8 @@ app.use((req,res,next)=>{
   res.locals.csrfToken = req.csrfToken();
   next();
 })
+
+app.use(flash());
 
 app.use(indexRoutes);
 app.use("/posts",postsRoutes);

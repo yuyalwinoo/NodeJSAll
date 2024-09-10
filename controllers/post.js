@@ -25,7 +25,6 @@ exports.renderPostsPage = (req,res,next)=>{
     .populate("userId","email")
     .sort({title:1})
     .then(posts=>{
-        console.log(posts)
         res.render(
             "posts",
                 {   

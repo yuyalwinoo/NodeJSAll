@@ -85,4 +85,26 @@ input,textarea {
 .login-out-bar a {
     margin: 0 5px !important;
 }
+.error {
+    color: red;
+    text-align: center;
+    font-size: larger;
+    padding: 5px;
+    border-radius: 8px;
+}
+.warning {
+    color: orange;
+    text-align: center;
+    font-size: larger;
+    padding: 5px;
+    border-radius: 8px;
+}
+.no-style-a {
+    background: unset !important;
+    text-align: center;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: small;
+    margin: 0 auto;
+}
 

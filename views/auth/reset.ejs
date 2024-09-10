@@ -1,26 +1,18 @@
 <%- include("../includes/head")%>
-    <h1 class="title">Login Here!</h1>
-    <a href="/posts">View All Posts</a>
+    <h1 class="title">Reset Password</h1>
+    <a href="/login">Go To Login</a>
     <section class="form-section">
         <% if(errorMsg.length){%>
             <p class="error"><%= errorMsg %></p>
         <% } %>
-        <form action="/login" method="post">
+        <form action="/reset" method="post">
             <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
             <div>
                 <label for="email">Enter Email</label>
                 <input type="text" id="email" name="email"/>
             </div>
-
             <div>
-                <label for="password">Enter Password</label>
-                <input type="password" id="password" name="password"/>
-            </div>
-            <div>
-                <a href="/reset-password" class="no-style-a">Forget Password?</a>
-            </div>
-            <div>
-                <button>Login</button>
+                <button>Reset Password</button>
             </div>
         </form>
     </section>
