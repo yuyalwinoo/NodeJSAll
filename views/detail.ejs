@@ -6,13 +6,15 @@
     <section class="form-section" style="width: 50% !important;">
         <div class="post-head-section">
             <h1><%= post.title %></h1>
-            <div class="post_action">
-                <a href="/admin/edit/<%= post._id %>">Edit</a>&nbsp;
-                <form action="/admin/delete/<%= post._id %>" method="post">
-                    <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
-                    <button>Delete</button>
-                </form>
-            </div>
+            <% if(post.userId.toString() === currentUserId.toString()){%>
+                <div class="post_action">
+                    <a href="/admin/edit/<%= post._id %>">Edit</a>&nbsp;
+                    <form action="/admin/delete/<%= post._id %>" method="post">
+                        <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
+                        <button>Delete</button>
+                    </form>
+                </div>
+            <%}%>
         </div>
         
         <img src=<%= post.imgUrl %> alt=<%= post.title %>/>

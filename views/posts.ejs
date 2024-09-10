@@ -6,9 +6,12 @@
     <div class="login-out-bar">
         <% if(isLogin) { %>
             <% if(posts.length < 1) { %>
-                Nothing to see now. <a href="/admin/create-post">+Add New Post</a>
+                Nothing to see now. 
+                <a href="/admin/create-post">
+                    +Add New Post as <%= currentUserEmail %>
+                </a>
             <% }else{ %>
-                <a href="/admin/create-post">+Add New Post</a>
+                <a href="/admin/create-post">+Add New Post as <%= currentUserEmail %></a>
             <% } %>
             &nbsp;
             <form action="/logout" method="post">

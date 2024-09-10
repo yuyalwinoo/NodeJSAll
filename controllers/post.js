@@ -30,6 +30,7 @@ exports.renderPostsPage = (req,res,next)=>{
                 {   
                     title:'Posts',
                     posts, 
+                    currentUserEmail : req.session.userInfo ? req.session.userInfo.email : ''
                 }
             )
     })
@@ -39,7 +40,7 @@ exports.renderPostsPage = (req,res,next)=>{
 exports.renderDetailPage = (req,res,next)=>{
     const postID = req.params.postID;
     Post.findById(postID).then(post=>{
-        res.render("detail",{title : post.title, post})
+        res.render("detail",{title : post.title, post,currentUserId : req.session.userInfo ? req.session.userInfo._id : ''})
     }).catch(err=>err)
 }
 
@@ -58,24 +59,28 @@ exports.updatePost = (req,res,next) =>{
     const {title, description, imgURL,postID} = req.body;
 
     Post.findById(postID).then(post=>{
+        if(post.userId.toString() !== req.user._id.toString())
+        {
+            return res.redirect("/posts")
+        }
         if(post)
         {
            post.title = title;
            post.description = description;
            post.imgUrl = imgURL;
-           return post.save()
+           return post.save().then(()=>{
+                console.log("Post updated");
+                res.redirect("/posts")
+            })
         }
         
-    }).then(()=>{
-        console.log("Post updated");
-        res.redirect("/posts")
     }).catch(err=>err)
 
 }
 
 exports.deletePost = (req,res,next) => {
     const postID = req.params.postID;
-    Post.findByIdAndDelete(postID).then(result=>{
+    Post.deleteOne({_id : postID, userId : req.user._id}).then(result=>{
         res.redirect("/posts")
     }).catch(err=>err)
     
