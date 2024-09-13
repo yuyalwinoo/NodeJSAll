@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const dotenv = require('dotenv').config();
 const crypto = require('crypto');
+const { validationResult } = require('express-validator');
 
 const User = require("../models/user");
 
@@ -16,7 +17,7 @@ let transporter = nodemailer.createTransport({
 
 // Login
 exports.getLoginPage = (req,res)=> {
-    res.render("auth/login",{title:'Login',errorMsg:req.flash("error")})
+    res.render("auth/login",{title:'Login',errorMsg:req.flash("error"),oldFrameData : {email:'',password:''}})
 }
 
 exports.postLoginData = (req,res) => {
@@ -25,13 +26,19 @@ exports.postLoginData = (req,res) => {
     //res.redirect("/posts");
 
     const {email, password} = req.body;
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+    {console.log(errors)
+        return res.status(422).
+        render("auth/login",{title:'Login',errorMsg:errors.array()[0].msg,oldFrameData : {email,password}})
+    }
     User.findOne({email})
     .then(
         user=>{
             if(!user)
             {
-                req.flash('error', 'Your Information is incorrect. Please try again!')
-                return res.redirect("/login")
+                return res.status(422)
+                .render("auth/login",{title:'Login',errorMsg:"Please enter valid email and password.",oldFrameData : {email,password}})
             } 
             bcrypt.compare(password,user.password).then(
                 isMatch => {
@@ -44,7 +51,7 @@ exports.postLoginData = (req,res) => {
                             console.log(err);
                         })
                     }
-                    res.redirect("/login")
+                    res.status(422).render("auth/login",{title:'Login',errorMsg:"Please enter valid email and password.",oldFrameData : {email,password}})
                 }
             )
         }
@@ -56,39 +63,39 @@ exports.postLoginData = (req,res) => {
 
 // Register
 exports.getRegisterPage = (req,res)=> {
-    res.render("auth/register",{title:'Register',errorMsg:req.flash("error")})
+    res.render("auth/register",{title:'Register',errorMsg:errors.array()[0].msg,oldFrameData : {email:'',password:''}})
 }
 exports.registerAccount = (req,res)=> {
    const {email, password} = req.body;
-   User.findOne({email}).then(
-    user=>{
-        if(user)
-        {
-            req.flash('error', 'Your email already exist!')
-            return res.redirect("/register")
-        }
-        return bcrypt.hash(password,10)
-        .then( hashedPassword => {
-                return User.create({
-                    email,
-                    password : hashedPassword
-                })
-            }
-        )
-        .then(()=>{
-            res.redirect("/login");
-            transporter.sendMail({
-                from : process.env.MAIL_SENDER,
-                to : email,
-                subject: "Account Created Successfully",
-                html: "<p>Thank you for creating your account.</p>",
-            },(err=>console.log(err)))
-        })
-        
+   const errors = validationResult(req);
+   if(!errors.isEmpty())
+    {
+        return res.status(422)
+        .render("auth/register",
+            {
+                title:'Register',
+                errorMsg:errors.array()[0].msg,
+                oldFrameData : {email,password}
+            })
     }
-    ).catch(
-        err=>console.log(err)
+    bcrypt.hash(password,10)
+    .then( hashedPassword => {
+            return User.create({
+                email,
+                password : hashedPassword
+            })
+        }
     )
+    .then(()=>{
+        res.redirect("/login");
+        transporter.sendMail({
+            from : process.env.MAIL_SENDER,
+            to : email,
+            subject: "Account Created Successfully",
+            html: "<p>Thank you for creating your account.</p>",
+        },(err=>console.log(err)))
+    })
+        
 }
 
 // Logout
@@ -118,7 +125,7 @@ exports.getNewPasswordPage = (req,res)=> {
         }).then(user=>{
                 if(user)
                 {
-                    return res.render("auth/newPassword",{title:'New Password',errorMsg:req.flash("error"),resultToken:token,userId:user._id.toString()})
+                    return res.render("auth/newPassword",{title:'New Password',errorMsg:req.flash("error"),resultToken:token,userId:user._id.toString(),oldFrameData : {password:'',confirmPassword:''}})
                 }else {
                     return res.redirect('/login')
                 }
@@ -161,20 +168,31 @@ exports.resetLinkSend = (req,res)=> {
 
 exports.changeNewPassword = (req,res)=>{
     const {password,confirmPassword,resultToken,userId} = req.body;
+
+    const errors = validationResult(req);
+   if(!errors.isEmpty())
+    {
+        return res.status(422)
+        .render("auth/newPassword",
+            {
+                title:'Reset Password',
+                errorMsg:errors.array()[0].msg,
+                resultToken,
+                userId,
+                oldFrameData : {password,confirmPassword}
+            })
+    }
+
     let resetUser;
     User.findOne({
         resultToken,
         tokenExpiration : {$gt : Date.now()},
         _id:userId
     }).then(user=>{
-        if(password === confirmPassword)
-        {
+
             resetUser = user;
             return bcrypt.hash(password,10)
-        }else{
-            req.flash("error","Password and Confirm Password is not match!");
-            return res.redirect("/reset-password/"+resultToken)
-        }
+
 
     }).then(hashedPassword=>{
         
@@ -184,7 +202,7 @@ exports.changeNewPassword = (req,res)=>{
         
         return resetUser.save();
     }).then(()=>{
-        res.redirect('/login')
+        return res.redirect('/login')
     })
     .catch(err=>console.log(err))
 }
