@@ -6,6 +6,7 @@
     "connect-mongodb-session": "^5.0.0",
     "csrf": "^3.1.0",
     "csurf": "^1.11.0",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",

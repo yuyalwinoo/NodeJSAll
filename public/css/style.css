@@ -143,6 +143,12 @@ input,textarea {
     height: 50%;
     margin-top: 5px;
 }
+.detail-user-email,.detail-createdAt {
+    font-size: small;
+    padding: 3px;
+    font-weight: 600;
+    color: rgb(165, 158, 158);
+}
 .go-to-posts{
     align-items: center;
     width: 30%;

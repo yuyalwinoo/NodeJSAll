@@ -2,7 +2,7 @@
     <section class="form-section" style="width: 60% !important;">
         <div class="post-head-section">
             <h1 class=""><%= post.title %></h1>
-            <% if(post.userId.toString() === currentUserId.toString()){%>
+            <% if(post.userId._id.toString() === currentUserId.toString()){%>
                 <div class="post_action">
                     <a href="/admin/edit/<%= post._id %>">Edit</a>&nbsp;
                     <form action="/admin/delete/<%= post._id %>" method="post">
@@ -10,6 +10,13 @@
                         <button>Delete</button>
                     </form>
                 </div>
+            <%}%>
+        </div>
+        <div>
+           <span class="detail-user-email">posted by - <%= post.userId.email %></span>
+
+            <% if(createDate){ %>
+                <span class="detail-createdAt">uploaded at - <%= createDate %></span>
             <%}%>
         </div>
         

@@ -4,21 +4,24 @@
         <a href="/posts">View All Posts</a>
     </div>
     <section class="form-section">
+        <% if(errorMsg.length){%>
+            <p class="error"><%= errorMsg %></p>
+        <% } %>
         <form action="/admin" method="post">
             <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
             <div>
                 <label for="title">Enter Title</label>
-                <input type="text" id="title" name="title" required/>
+                <input type="text" id="title" name="title" value="<%= oldFrameData.title%>"/>
             </div>
 
             <div>
                 <label for="imgURL">Enter ImageURL</label>
-                <input type="text" id="imgURL" name="imgURL" required/>
+                <input type="text" id="imgURL" name="imgURL" value="<%= oldFrameData.imgURL%>"/>
             </div>
     
             <div>
                 <label for="description">Enter Description</label>
-                <textarea id="description" name="description" rows="8" required></textarea>
+                <textarea type="text" id="description" name="description" cols="30" rows="8"><%= oldFrameData.description%></textarea>
             </div>
     
             <div>

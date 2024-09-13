@@ -4,24 +4,25 @@
         <a href="/posts">View All Posts</a>
     </div>
     <section class="form-section">
+        <% if(errorMsg.length){%>
+            <p class="error"><%= errorMsg %></p>
+        <% } %>
         <form action="/admin/edit-post" method="post">
             <input type="hidden" value="<%= csrfToken%>" name="_csrf"/>
-            <input type="hidden" name="postID" value="<%= post._id%>"/>
+            <input type="hidden" name="postID" value="<%= validationFail ? oldFrameData.postID : post._id%>"/>
             <div>
                 <label for="title">Enter Title</label>
-                <input type="text" id="title" name="title" value="<%= post.title %>" required/>
+                <input type="text" id="title" name="title" value="<%= validationFail ? oldFrameData.title : post.title %>" />
             </div>
 
             <div>
                 <label for="imgURL">Enter ImageURL</label>
-                <input type="text" id="imgURL" name="imgURL" value="<%= post.imgUrl %>" required/>
+                <input type="text" id="imgURL" name="imgURL" value="<%= validationFail ? oldFrameData.imgURL : post.imgUrl %>" />
             </div>
     
             <div>
                 <label for="description">Enter Description</label>
-                <textarea id="description" name="description" rows="8" required>
-                    <%= post.description %>
-                </textarea>
+                <textarea type="text" id="description" name="description" cols="30" rows="8"><%= validationFail ? oldFrameData.description : post.description%></textarea>
             </div>
     
             <div>

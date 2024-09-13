@@ -28,7 +28,7 @@ exports.postLoginData = (req,res) => {
     const {email, password} = req.body;
     const errors = validationResult(req);
     if(!errors.isEmpty())
-    {console.log(errors)
+    {
         return res.status(422).
         render("auth/login",{title:'Login',errorMsg:errors.array()[0].msg,oldFrameData : {email,password}})
     }
@@ -63,7 +63,7 @@ exports.postLoginData = (req,res) => {
 
 // Register
 exports.getRegisterPage = (req,res)=> {
-    res.render("auth/register",{title:'Register',errorMsg:errors.array()[0].msg,oldFrameData : {email:'',password:''}})
+    res.render("auth/register",{title:'Register',errorMsg:req.flash("error"),oldFrameData : {email:'',password:''}})
 }
 exports.registerAccount = (req,res)=> {
    const {email, password} = req.body;
@@ -108,7 +108,7 @@ exports.logout = (req,res)=> {
 
 // reset password
 exports.getResetPage = (req,res)=> {
-    res.render("auth/reset",{title:'Reset Password',errorMsg:req.flash("error")})
+    res.render("auth/reset",{title:'Reset Password',errorMsg:req.flash("error"),oldFrameData : {email:''}})
 }
 exports.getFeedbackPage = (req,res)=> {
     res.render("auth/feedback",{title:'Feedback'})
@@ -136,6 +136,17 @@ exports.getNewPasswordPage = (req,res)=> {
 
 exports.resetLinkSend = (req,res)=> {
     const {email} = req.body;
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+    {
+        return res.status(422)
+        .render("auth/reset",
+            {
+                title:'Reset Password',
+                errorMsg:errors.array()[0].msg,
+                oldFrameData : {email}
+            })
+    }
     crypto.randomBytes(32,(err,buffer)=>{
         if(err)
         {
@@ -148,8 +159,13 @@ exports.resetLinkSend = (req,res)=> {
         }).then(user=>{
             if(!user)
             {
-                req.flash("error","No account found with this email");
-                return res.redirect("/reset-password")
+                return res.status(422)
+                .render("auth/reset",
+                    {
+                        title:'Reset Password',
+                        errorMsg:"No account found with this email",
+                        oldFrameData : {email}
+                    })
             }
             user.resultToken = token;
             user.tokenExpiration = Date.now() + 1800000; //30min
@@ -170,7 +186,7 @@ exports.changeNewPassword = (req,res)=>{
     const {password,confirmPassword,resultToken,userId} = req.body;
 
     const errors = validationResult(req);
-   if(!errors.isEmpty())
+    if(!errors.isEmpty())
     {
         return res.status(422)
         .render("auth/newPassword",
