@@ -154,3 +154,11 @@ input,textarea {
     width: 30%;
     margin: 30px auto;
 }
+
+.container {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 20% auto;
+}

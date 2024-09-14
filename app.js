@@ -13,6 +13,8 @@ const {adminRoutes} = require("./routes/admin")
 const indexRoutes = require("./routes/index")
 const authRoutes = require("./routes/auth")
 
+const errorController = require("./controllers/error");
+
 const User = require('./models/user')
 
 const {isLogin} = require("./middleware/isLogin")
@@ -72,6 +74,9 @@ app.use(indexRoutes);
 app.use("/posts",postsRoutes);
 app.use("/admin",isLogin,adminRoutes);
 app.use(authRoutes);
+
+app.all("*",errorController.get404Page)
+app.use(errorController.get500Page)
 
 mongoose.connect(process.env.MONGODB_URL)
 .then((_) => {
